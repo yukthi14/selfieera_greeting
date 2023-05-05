@@ -1,4 +1,3 @@
-import 'package:alarm/alarm.dart';
 import 'package:intl/date_time_patterns.dart';
 import 'package:selfieera_greeting/constants/color.dart';
 import 'package:selfieera_greeting/constants/data.dart';
@@ -6,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:selfieera_greeting/constants/sizer.dart';
 import 'package:selfieera_greeting/constants/strings.dart';
+import 'package:selfieera_greeting/screens/notification_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class GreetingCalender extends StatefulWidget {
   const GreetingCalender({Key? key}) : super(key: key);
@@ -29,6 +31,28 @@ class _GreetingCalenderState extends State<GreetingCalender> {
       selectedMonth = month;
     });
   }
+  setAlarm(List<Map<String, Map<String, String>>> event)async{
+    final SharedPreferences pref=await SharedPreferences.getInstance();
+    if(pref.getBool('alarmSet') == null){
+      for (var element in event) {
+        var allDates=element['india'];
+        allDates?.forEach((key, value) {
+          DateTime date2=DateTime.parse('$key 24:00:00');
+          NotificationService().scheduleNotification(scheduledNotificationDateTime:date2,
+              title:"Let's Celebrate",body: value,id:1
+          );
+        });
+      }
+      pref.setBool('alarmSet', true);
+    }
+
+  }
+
+ @override
+  void initState() {
+   setAlarm(specialDay);
+   super.initState();
+ }
 
   @override
   Widget build(BuildContext context) {
@@ -779,15 +803,23 @@ class _DayState extends State<Day> {
 
   @override
   Widget build(BuildContext context) {
-    final alarmSettings=AlarmSettings(id: 1, dateTime: DateTime.now(),notificationTitle: "hello", assetAudioPath: "assets/Kesariya(PagalWorld.com.se).mp3",vibrate: true,enableNotificationOnKill: true,fadeDuration: 3.0);
     DateTime now = DateTime.now();
     return GestureDetector(
       onTap: () {
         widget.onDateSelected.call(widget.date, widget.month);
-         print(widget.date + "-" + widget.month + "-" + now.year.toString());
+        // print(widget.date + "-" + widget.month + "-" + now.year.toString());
+        NotificationService ob =NotificationService();
 
         _dialogBuilder(context);
-       Alarm.set(alarmSettings: alarmSettings);
+        DateTime date=DateTime.parse('2024-05-05 06:20');
+        ob.scheduleNotification(
+            scheduledNotificationDateTime:date,
+            title:"Let's Celebrate",body: "value",id: 0,payLoad: "hello"
+        );
+        print(date);
+
+        NotificationService().showNotification(title: 'hello',body: 'A good day');
+
       },
       child: Container(
         height: displayHeight(context)*0.03,
@@ -818,38 +850,34 @@ class _DayState extends State<Day> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Center(child: Text('Country')),
-          content: Container(
+          content: SizedBox(
             width: displayWidth(context)*2,
             height: displayHeight(context),
             child: ListView.builder(
               itemCount:specialDay.length,
               itemBuilder: (context,index){
                 final countrySpecialDay=specialDay.elementAt(index);
-                final dayName=countrySpecialDay['${widget.date}-${widget.month}-$year'];
-                final countryName=countrySpecialDay['countryName'];
-               // final alarmSettings=AlarmSettings(id: 1,  assetAudioPath: "", dateTime: ,);
-                print("${widget.date}-${widget.month}-$year");
+                final allDates=countrySpecialDay["india"];
+                String month=stringManger(widget.month);
+                String day=stringDate(widget.date);
+                final dayName=allDates!['$year-$month-$day'];
+                final countryName=countrySpecialDay.keys;
                 return
-
-                  (dayName!=null)?Container(
-                  child: Column(
+                  (dayName!=null)?Column(
                     children: [
 
-                      Text(countryName.toString(),style: TextStyle(fontWeight: FontWeight.w900),),
+                      Text(countryName.toString(),style: const TextStyle(fontWeight: FontWeight.w900),),
                       SizedBox(height: displayHeight(context)*0.02,),
                       Text(dayName.toString()),
-                      Divider(thickness: 3,),
+                      const Divider(thickness: 3,),
                     ],
-                  ),
-                ):Container(
-                    child: Column(
-                      children: [
-                        Text(countryName.toString(),style: TextStyle(fontWeight: FontWeight.w900),),
-                        Text("-------------------"),
-                        Divider(thickness: 3,),
-                      ],
-                    ),
-                  );
+                  ):Column(
+                  children: [
+                    Text(countryName.toString(),style: const TextStyle(fontWeight: FontWeight.w900),),
+                    const Text("-------------------"),
+                    const Divider(thickness: 3,),
+                  ],
+                );
                 // return Text(dayName.toString());
               },),
           ),
@@ -857,4 +885,79 @@ class _DayState extends State<Day> {
       },
     );
   }
+
+  String stringManger (String month){
+    if(month=="January"){
+      return "01";
+    }
+    else if(month=="February"){
+      return "02";
+    }
+    else if(month=="March"){
+      return "03";
+    }
+    else if(month=="April"){
+      return "04";
+    }
+    else if(month=="May"){
+      return "05";
+    }
+    else if(month=="June"){
+      return "06";
+    }
+    else if(month=="July"){
+      return "07";
+    }
+    else if(month=="August"){
+      return "08";
+    }
+    else if(month=="September"){
+      return "09";
+    }
+    else if(month=="October"){
+      return "10";
+    }
+    else if(month=="November"){
+      return "11";
+    }
+    else if(month=="December"){
+      return "12";
+    }
+    else{
+      return "Invaild";
+    }
+  }
+  String stringDate(String date){
+    if(date=="1"){
+      return "01";
+    }
+    else if(date=="2"){
+      return "02";
+    }
+    else if(date=="3"){
+      return "03";
+    }
+    else if(date=="4"){
+      return "04";
+    }
+    else if(date=="5"){
+      return "05";
+    }
+    else if(date=="6"){
+      return "06";
+    }
+    else if(date=="7"){
+      return "07";
+    }
+    else if(date=="8"){
+      return "08";
+    }
+    else if(date=="9"){
+      return "09";
+    }
+    else{
+      return widget.date;
+    }
+  }
+
 }
