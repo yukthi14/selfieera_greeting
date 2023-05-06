@@ -811,14 +811,14 @@ class _DayState extends State<Day> {
         NotificationService ob =NotificationService();
 
         _dialogBuilder(context);
-        DateTime date=DateTime.parse('2024-05-05 06:20');
+        DateTime date=DateTime.parse('2023-05-06 13:35:50');
         ob.scheduleNotification(
             scheduledNotificationDateTime:date,
             title:"Let's Celebrate",body: "value",id: 0,payLoad: "hello"
         );
         print(date);
 
-        NotificationService().showNotification(title: 'hello',body: 'A good day');
+        //NotificationService().showNotification(title: 'hello',body: 'A good day');
 
       },
       child: Container(
@@ -865,7 +865,6 @@ class _DayState extends State<Day> {
                 return
                   (dayName!=null)?Column(
                     children: [
-
                       Text(countryName.toString(),style: const TextStyle(fontWeight: FontWeight.w900),),
                       SizedBox(height: displayHeight(context)*0.02,),
                       Text(dayName.toString()),
