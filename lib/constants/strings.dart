@@ -1,10 +1,44 @@
 
 //final String country=['India'];
+String date='date';
+String specialDays='specialDay';
+String countryName='countryName';
+
+
+var allDatas=[];
+List<Map<String, dynamic>> realData=[];
+String location='';
+String dayName='';
+Map timing={
+'india': '24:00:00',
+'pakistan': '23:30:00',
+'united state': '09:30:00',
+'united states of emirates': '24:30:00',
+'spain': '03:30:00',
+'taiwan': '21:30:00',
+'indonesia': '22:32:00',
+'philippines': '21:30:00',
+'iraq' : '24:00:00',
+'egypt': '24:00:00',
+'nigera':'20:00:00',
+'qatar': '24:00:00',
+'algeria': '20:30:00',
+'jordan': '22:30:00',
+'oman': '22:30:00',
+'sudan': '21:30:00',
+'bahrain': '21:30:00',
+'kuwait': '21:30:00',
+'comoros': '21:30:00',
+'tunisia': '19:30:00',
+'djibouti': '21:30:00',
+'libya': '24:00:00',
+'saudi arabia': '21:30:00',
+};
 
 final  specialDay=[
   {
     'india': {
-      "2025-01-01": "New Year's Day",
+      "2023-07-21": "New Year's Day",
       "2025-01-14": "Makar Sankranti/Lohri",
       "2025-01-15": "Pongal",
       "2025-01-22": "Lunar New Year",

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "105228754471",
+    "firebase_url": "https://selfieeragreetingalert-default-rtdb.firebaseio.com",
+    "project_id": "selfieeragreetingalert",
+    "storage_bucket": "selfieeragreetingalert.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105228754471:android:ae2bee3f568d14cb61b802",
+        "android_client_info": {
+          "package_name": "com.example.selfieera_greeting"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "105228754471-02etc0hrmpor7tlb141htd7ujg62091i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBz3bKkex9o8aELq7j5GEYHx5g5CjmElCE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "105228754471-02etc0hrmpor7tlb141htd7ujg62091i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
