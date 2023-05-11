@@ -1,18 +1,14 @@
-import 'dart:convert';
-
+import 'package:alarm/alarm.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:intl/date_time_patterns.dart';
+import 'package:flutter/foundation.dart';
 import 'package:selfieera_greeting/constants/color.dart';
 import 'package:selfieera_greeting/constants/data.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:selfieera_greeting/constants/sizer.dart';
 import 'package:selfieera_greeting/constants/strings.dart';
-import 'package:selfieera_greeting/main.dart';
-import 'package:selfieera_greeting/screens/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../constants/model.dart';
+import '../constants/time_in_india.dart';
 
 class GreetingCalender extends StatefulWidget {
   const GreetingCalender({Key? key}) : super(key: key);
@@ -38,14 +34,13 @@ class _GreetingCalenderState extends State<GreetingCalender> {
   }
 
   takingData() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
     final ref = FirebaseDatabase.instance.ref();
-    String? location = preferences.getString('location');
-    if (location == null) {
-      //FlutterToast
-      const MyApp().getCountryName();
-    }
-
+    // SharedPreferences preferences = await SharedPreferences.getInstance();
+    // String? location = preferences.getString('location');
+    // if (location == null) {
+    //   //FlutterToast
+    //   const MyApp().getCountryName();
+    // }
     try {
       final snapshot = await ref.get();
       if (snapshot.exists) {
@@ -53,8 +48,11 @@ class _GreetingCalenderState extends State<GreetingCalender> {
         for (DataSnapshot element in snapshot.children) {
           allDatas.add(element.value);
         }
+        setAlarm(allDatas);
       } else {
-        print('No data available.');
+        if (kDebugMode) {
+          print(Strings.noData);
+        }
       }
     } catch (e) {
       e.toString();
@@ -63,44 +61,33 @@ class _GreetingCalenderState extends State<GreetingCalender> {
 
   setAlarm(var allData) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
-    NotificationService ob = NotificationService();
-    print('kkkkkkkkk');
-    if (pref.getBool('alarmSetss') == null) {
-      print('hello');
-      DateTime date=DateTime.parse('2023-05-09 18:30:50');
-      ob.scheduleNotification(
-          scheduledNotificationDateTime:date,
-          title:"India",body: "xyz",id: 0,payLoad: "hello"
-      );
-      print(allData);
-      for (var element in allData) {
-        print('hooooooooooooooooo');
-        String eventName = element[specialDays];
-        String locName = element[countryName];
-        String key= element[date];
-        print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
-        print(eventName);
-        print(locName);
-        print(key);
-        print(timing[locName]);
-          DateTime date2 = DateTime.parse('$key ${timing[locName]}');
-          print(date2);
-          NotificationService().scheduleNotification(
-              scheduledNotificationDateTime: date2,
-              title: "Let's Celebrate",
-              body: eventName,
-              id: 1);
-
+    if (pref.getBool(Strings.initialWork) == false) {
+      for (int id = 0; id < allData.length; id++) {
+        String eventName = allData[id][Strings.specialDays];
+        String locName = allData[id][Strings.countryName];
+        String key = allData[id][Strings.date];
+        DateTime date2 = DateTime.parse('$key ${timing[locName]}');
+        //DateTime date3 = DateTime.parse('2023-05-11 11:10:55');
+        final alarmSettings = AlarmSettings(
+          id: id,
+          dateTime: date2,
+          assetAudioPath: 'assets/Kesariya(PagalWorld.com.se).mp3',
+          loopAudio: true,
+          vibrate: true,
+          fadeDuration: 3.0,
+          notificationTitle: locName,
+          notificationBody: eventName,
+          enableNotificationOnKill: true,
+        );
+        await Alarm.set(alarmSettings: alarmSettings);
       }
-      //pref.setBool('alarmSets', true);
+      pref.setBool(Strings.initialWork, true);
     }
   }
 
   @override
   void initState() {
     takingData();
-    print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkgggggggggggggggggggggggggggggggkkkkkkkkkkkkkkkkkkkkkkkkkk');
-    setAlarm(allDatas);
     super.initState();
   }
 
@@ -229,18 +216,18 @@ class _GreetingCalenderState extends State<GreetingCalender> {
     }
 
     return Scaffold(
-      backgroundColor: Color(0xFFCADCED),
+      backgroundColor: const Color(0xFFCADCED),
       body: Column(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(top: displayHeight(context) * 0.07),
-            child: DefaultTextStyle(
+            padding: EdgeInsets.only(top: displayHeight(context) * 0.09),
+            child: const DefaultTextStyle(
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.black),
               child: Text(
-                "Calender",
+                Strings.title,
               ),
             ),
           ),
@@ -251,7 +238,6 @@ class _GreetingCalenderState extends State<GreetingCalender> {
             //     width: 20,
             //   );
             // },
-
             controller: PageController(initialPage: month - 1, keepPage: false),
 
             itemCount: monthName.length,
@@ -358,7 +344,7 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       DefaultTextStyle(
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w400,
                             wordSpacing: 20,
@@ -877,7 +863,7 @@ class _DayState extends State<Day> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         widget.onDateSelected.call(widget.date, widget.month);
         // print(widget.date + "-" + widget.month + "-" + now.year.toString());
         DateTime now = DateTime.now();
@@ -886,13 +872,9 @@ class _DayState extends State<Day> {
         String day = stringDate(widget.date);
         gettingResult('$year-$month-$day');
         _dialogBuilder(context);
-
-        // print(date);
-
-        //NotificationService().showNotification(title: 'hello',body: 'A good day');
       },
       child: Container(
-        height: displayHeight(context) * 0.02,
+        height: displayHeight(context) * 0.03,
         width: displayWidth(context) * 0.07,
         decoration: BoxDecoration(
             color: (widget.date == widget.todayDate &&
@@ -901,7 +883,7 @@ class _DayState extends State<Day> {
                 : AppColors.transparant,
             border: Border.all(color: _selectcolor())),
         margin: EdgeInsets.only(
-            top: displayHeight(context) * 0.02,
+            top: displayHeight(context) * 0.01,
             right: widget.rightMargin,
             bottom: displayHeight(context) * 0.02),
         child: Padding(
@@ -921,15 +903,15 @@ class _DayState extends State<Day> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Center(child: Text('Country')),
+          title: const Center(child: Text(Strings.dialogTitle)),
           content: SizedBox(
             width: displayWidth(context) * 2,
             height: displayHeight(context),
             child: ListView.builder(
               itemCount: realData.length,
               itemBuilder: (context, index) {
-                String loc =  realData[index]['loc'];
-                final dayName = realData[index]['dayName'];
+                String loc = realData[index][Strings.loc];
+                final dayName = realData[index][Strings.dayName];
                 return (dayName != null)
                     ? Column(
                         children: [
@@ -949,10 +931,10 @@ class _DayState extends State<Day> {
                     : Column(
                         children: [
                           Text(
-                            countryName.toString(),
+                            Strings.countryName.toString(),
                             style: const TextStyle(fontWeight: FontWeight.w900),
                           ),
-                          const Text("-------------------"),
+                          const Text(Strings.empty),
                           const Divider(
                             thickness: 3,
                           ),
@@ -1024,15 +1006,11 @@ class _DayState extends State<Day> {
   gettingResult(String todayDate) {
     realData.clear();
     for (var element in allDatas) {
-      if (element[date] == todayDate) {
-        dayName = element[specialDays];
-        location = element[countryName];
-         realData.add({
-           'loc':location,
-           'dayName':dayName
-         });
+      if (element[Strings.date] == todayDate) {
+        dayName = element[Strings.specialDays];
+        location = element[Strings.countryName];
+        realData.add({Strings.loc: location, Strings.dayName: dayName});
       }
     }
-    print(realData);
   }
 }

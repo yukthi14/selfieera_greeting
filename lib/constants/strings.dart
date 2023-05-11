@@ -1,109 +1,17 @@
+class Strings {
+  static const String date = 'date';
+  static const String specialDays = 'specialDay';
+  static const String countryName = 'countryName';
+  static const String title = 'Calender';
+  static const String initialWork = 'initialWork';
+  static const String noData = 'No data available';
+  static const String dialogTitle = 'Country';
+  static const String loc = 'loc';
+  static const String dayName = 'dayName';
+  static const String empty = '-------------------';
+}
 
-//final String country=['India'];
-String date='date';
-String specialDays='specialDay';
-String countryName='countryName';
-
-
-var allDatas=[];
-List<Map<String, dynamic>> realData=[];
-String location='';
-String dayName='';
-Map timing={
-'india': '24:00:00',
-'pakistan': '23:30:00',
-'united state': '09:30:00',
-'united states of emirates': '24:30:00',
-'spain': '03:30:00',
-'taiwan': '21:30:00',
-'indonesia': '22:32:00',
-'philippines': '21:30:00',
-'iraq' : '24:00:00',
-'egypt': '24:00:00',
-'nigera':'20:00:00',
-'qatar': '24:00:00',
-'algeria': '20:30:00',
-'jordan': '22:30:00',
-'oman': '22:30:00',
-'sudan': '21:30:00',
-'bahrain': '21:30:00',
-'kuwait': '21:30:00',
-'comoros': '21:30:00',
-'tunisia': '19:30:00',
-'djibouti': '21:30:00',
-'libya': '24:00:00',
-'saudi arabia': '21:30:00',
-};
-
-final  specialDay=[
-  {
-    'india': {
-      "2023-07-21": "New Year's Day",
-      "2025-01-14": "Makar Sankranti/Lohri",
-      "2025-01-15": "Pongal",
-      "2025-01-22": "Lunar New Year",
-      "2025-01-26": "Republic Day/Vasant Panchami",
-      "2025-02-05": "Guru Ravidas Jayanti/Hazarat Ali's Birthday",
-      "2025-02-14": "Valentine's Day",
-      "2025-02-15": "Maharishi Dayanand Saraswati Jayanti",
-      "2025-02-18": "Maha Shivaratri/Shivaratri",
-      "2025-02-19": "Shivaji Jayanti",
-      "2025-03-07": "Dolyatra/Holika Dahana",
-      "2025-03-08": "Holi",
-      "2025-03-21": "March Equinox",
-      "2025-03-22": "Chaitra Sukhladi/Ugadi/Gudi Padwa",
-      "2025-03-24": "Ramadan Start",
-      "2025-03-30": "Rama Navami",
-      "2025-04-04": "Mahavir Jayanti",
-      "2025-04-06": "First day of Passover/Maundy Thursday",
-      "2025-04-07": "Good Friday",
-      "2025-04-09": "Easter Day",
-      "2025-04-14": "Vaisakhi/Ambedkar Jayanti",
-      "2025-04-15": "Mesadi / Vaisakhadi",
-      "2025-04-21": "Jamat Ul-Vida (Tentative Date)",
-      "2025-04-22": "Ramzan Id/Eid-ul-Fitar",
-      "2025-05-01": "International Worker's Day",
-      "2025-05-05": "Buddha Purnima/Vesak",
-      "2025-05-09": "Birthday of Rabindranath",
-      "2025-05-14": "Mother's Day",
-      "2025-06-18": "Father's Day",
-      "2025-06-20": "Rath Yatra",
-      "2025-06-21": "June Solstice",
-      "2025-06-29": "Bakrid/Eid ul-Adha ",
-      "2025-07-03": "Guru Purnima",
-      "2025-07-29": "Muharram/Ashura ",
-      "2025-08-06": "Friendship Day",
-      "2025-08-15": "Independence Day",
-      "2025-08-16": "Parsi New Year",
-      "2025-08-20": "Vinayaka Chathurthi",
-      "2025-08-29": "Onam",
-      "2025-08-30": "Raksha Bandhan (Rakhi)",
-      "2025-09-07": "Janmashtami",
-      "2025-09-19": "Ganesh Chaturthi\Vinayaka Chaturthi",
-      "2025-09-23": "September Equinox",
-      "2025-09-28": "Milad un-Nabi\Id-e-Milad ",
-      "2025-10-02": "Mahatma Gandhi Jayanti",
-      "2025-10-15": "First Day of Sharad Navratri",
-      "2025-10-20": "First Day of Durga Puja Festivities",
-      "2025-10-21": "Maha Saptami",
-      "2025-10-22": "Maha Ashtami",
-      "2025-10-23": "Maha Navami",
-      "2025-10-24": "Dussehra",
-      "2025-10-28": "Maharishi Valmiki Jayanti",
-      "2025-10-31": "Halloween",
-      "2025-11-01": "Karaka Chaturthi (Karva Chauth)",
-      "2025-11-12": "Naraka Chaturdasi/Diwali/Deepavali",
-      "2025-11-13": "Govardhan Puja",
-      "2025-11-15": "Bhai Duj",
-      "2025-11-19": "Chhat Puja (Pratihar Sashthi/Surya Sashthi)",
-      "2025-11-24": "Guru Tegh Bahadur's Martyrdom Day",
-      "2025-11-27": "Guru Nanak Jayanti",
-      "2025-12-08": "First Day of Hanukkah",
-      "2025-12-15": "Last day of Hanukkah",
-      "2025-12-22": "December Solstice",
-      "2025-12-24": "Christmas Eve",
-      "2025-12-25": "Christmas",
-      "2025-12-31": "New Year's Eve",
-    }
-  }
-];
+var allDatas = [];
+List<Map<String, dynamic>> realData = [];
+String location = '';
+String dayName = '';

@@ -1,8 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
-// Use https://chir.ag/projects/name-that-color to get the color name from hexadecimal
 class AppColors {
   static const Color purple = Color(0x000a1283);
   static const Color purpleHeart = Color(0x0028cdc1);
