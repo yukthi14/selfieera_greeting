@@ -1,4 +1,3 @@
-import 'package:alarm/alarm.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:selfieera_greeting/constants/color.dart';
@@ -7,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:selfieera_greeting/constants/sizer.dart';
 import 'package:selfieera_greeting/constants/strings.dart';
+import 'package:selfieera_greeting/screens/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/time_in_india.dart';
 
@@ -61,25 +61,28 @@ class _GreetingCalenderState extends State<GreetingCalender> {
 
   setAlarm(var allData) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
-    if (pref.getBool(Strings.initialWork) == false) {
+    if (pref.getBool(Strings.initialWork) == null) {
+      NotificationService ob = NotificationService();
+      // DateTime date3 = DateTime.parse('2023-05-12 12:04:00');
+      // ob.scheduleNotification(
+      //   id: 10,
+      //     title: 'hello yukthi',
+      //     body: "hi yukthi",
+      //     payLoad: 'let see',
+      //     scheduledNotificationDateTime: date3,
+      // );
       for (int id = 0; id < allData.length; id++) {
         String eventName = allData[id][Strings.specialDays];
         String locName = allData[id][Strings.countryName];
         String key = allData[id][Strings.date];
         DateTime date2 = DateTime.parse('$key ${timing[locName]}');
-        //DateTime date3 = DateTime.parse('2023-05-11 11:10:55');
-        final alarmSettings = AlarmSettings(
+        ob.scheduleNotification(
           id: id,
-          dateTime: date2,
-          assetAudioPath: 'assets/Kesariya(PagalWorld.com.se).mp3',
-          loopAudio: true,
-          vibrate: true,
-          fadeDuration: 3.0,
-          notificationTitle: locName,
-          notificationBody: eventName,
-          enableNotificationOnKill: true,
+          title: locName,
+          body: eventName,
+          payLoad:Strings.celebration,
+          scheduledNotificationDateTime: date2,
         );
-        await Alarm.set(alarmSettings: alarmSettings);
       }
       pref.setBool(Strings.initialWork, true);
     }
@@ -865,6 +868,7 @@ class _DayState extends State<Day> {
     return GestureDetector(
       onTap: () async {
         widget.onDateSelected.call(widget.date, widget.month);
+
         // print(widget.date + "-" + widget.month + "-" + now.year.toString());
         DateTime now = DateTime.now();
         String year = now.year.toString();

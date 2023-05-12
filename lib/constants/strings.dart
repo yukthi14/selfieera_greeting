@@ -3,11 +3,12 @@ class Strings {
   static const String specialDays = 'specialDay';
   static const String countryName = 'countryName';
   static const String title = 'Calender';
-  static const String initialWork = 'initialWork';
+  static const String initialWork = 'initialWorks';
   static const String noData = 'No data available';
   static const String dialogTitle = 'Country';
   static const String loc = 'loc';
   static const String dayName = 'dayName';
+  static const String celebration = "Let's Celebrate";
   static const String empty = '-------------------';
 }
 

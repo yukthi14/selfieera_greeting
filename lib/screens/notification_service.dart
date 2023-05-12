@@ -1,5 +1,5 @@
+import 'dart:typed_data';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationService {
@@ -8,7 +8,7 @@ class NotificationService {
 
   Future<void> initNotification() async {
     AndroidInitializationSettings initializationSettingsAndroid =
-    const AndroidInitializationSettings('ic');
+    const AndroidInitializationSettings('notification_logo');
 
     var initializationSettingsIOS = DarwinInitializationSettings(
         requestAlertPermission: true,
@@ -25,10 +25,16 @@ class NotificationService {
   }
 
   notificationDetails() {
-    return const NotificationDetails(
+    return  NotificationDetails(
         android: AndroidNotificationDetails('channelId', 'channelName',
-            importance: Importance.max),
-        iOS: DarwinNotificationDetails());
+            importance: Importance.max,
+          sound: const RawResourceAndroidNotificationSound('notification_alarm'),
+          playSound: true,
+            enableVibration: true,
+            vibrationPattern: Int64List.fromList([0, 500, 1000, 500, 1000, 500, 1000]),
+            priority: Priority.max
+        ),
+        iOS: const DarwinNotificationDetails());
   }
 
   Future showNotification(

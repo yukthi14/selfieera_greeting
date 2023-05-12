@@ -1,16 +1,19 @@
-import 'package:alarm/alarm.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:selfieera_greeting/screens/greeting_calender.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:selfieera_greeting/screens/notification_service.dart';
+import 'package:timezone/data/latest.dart' as tz;
+
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp();
-  await Alarm.init();
-
+  NotificationService().initNotification();
+  tz.initializeTimeZones();
   try {
+   await Firebase.initializeApp();
     var status = await Permission.notification.status;
     if (status.isDenied) {
       Map<Permission, PermissionStatus> statuses = await [
@@ -25,22 +28,8 @@ Future<void> main() async {
       print(e.toString());
     }
   }
-  try {
-    var status = await Permission.location.serviceStatus;
-    if (status.isEnabled) {
-      Map<Permission, PermissionStatus> statuses = await [
-        Permission.location,
-      ].request();
-      if (kDebugMode) {
-        print(statuses);
-      }
-    }
-  } catch (e) {
-    if (kDebugMode) {
-      print(e.toString());
-    }
-  }
   runApp(const MyApp());
+
 }
 
 class MyApp extends StatelessWidget {
