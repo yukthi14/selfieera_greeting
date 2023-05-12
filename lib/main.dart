@@ -10,7 +10,7 @@ import 'package:timezone/data/latest.dart' as tz;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  NotificationService().initNotification();
+  await NotificationService().initNotification();
   tz.initializeTimeZones();
   try {
    await Firebase.initializeApp();

@@ -8,7 +8,7 @@ class NotificationService {
 
   Future<void> initNotification() async {
     AndroidInitializationSettings initializationSettingsAndroid =
-    const AndroidInitializationSettings('notification_logo');
+    const AndroidInitializationSettings('notify_logo');
 
     var initializationSettingsIOS = DarwinInitializationSettings(
         requestAlertPermission: true,
@@ -35,12 +35,6 @@ class NotificationService {
             priority: Priority.max
         ),
         iOS: const DarwinNotificationDetails());
-  }
-
-  Future showNotification(
-      {int id = 0, String? title, String? body, String? payLoad}) async {
-    return notificationsPlugin.show(
-        id, title, body, await notificationDetails());
   }
 
   Future scheduleNotification(
