@@ -35,12 +35,6 @@ class _GreetingCalenderState extends State<GreetingCalender> {
 
   takingData() async {
     final ref = FirebaseDatabase.instance.ref();
-    // SharedPreferences preferences = await SharedPreferences.getInstance();
-    // String? location = preferences.getString('location');
-    // if (location == null) {
-    //   //FlutterToast
-    //   const MyApp().getCountryName();
-    // }
     try {
       final snapshot = await ref.get();
       if (snapshot.exists) {
@@ -59,37 +53,42 @@ class _GreetingCalenderState extends State<GreetingCalender> {
     }
   }
 
+
   setAlarm(var allData) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     DateTime now = DateTime.now();
-    print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
-    print(pref.getBool(Strings.initialWork));
-    if (pref.getBool(Strings.initialWork) == null) {
-      NotificationService ob = NotificationService();
-      // DateTime date3 = DateTime.parse('2023-05-12 12:04:00');
-      // ob.scheduleNotification(
-      //   id: 10,
-      //     title: 'hello yukthi',
-      //     body: "hi yukthi",
-      //     payLoad: 'let see',
-      //     scheduledNotificationDateTime: date3,
-      // );
-      for (int id = 0; id < allData.length; id++) {
-        String eventName = allData[id][Strings.specialDays];
-        String locName = allData[id][Strings.countryName];
-        String key = allData[id][Strings.date];
-        DateTime date2 = DateTime.parse('$key ${timing[locName]}');
-        if(!date2.isBefore(now)&&!date2.isAtSameMomentAs(now)) {
-          ob.scheduleNotification(
-          id: id,
-          title: locName,
-          body: eventName,
-          payLoad:Strings.celebration,
-          scheduledNotificationDateTime: date2,
-        );
+    try{
+      if (pref.getBool(Strings.initialWork) == null) {
+         NotificationService ob = NotificationService();
+        // DateTime date3 = DateTime.parse('2023-05-13 15:45:00');
+        // ob.scheduleNotification(
+        //   id: 6000,
+        //   title: 'hello yukthi',
+        //   body: "hi yukthi",
+        //   payLoad: Strings.celebration,
+        //   scheduledNotificationDateTime: date3,
+        // );
+        for (int id = 0; id < allData.length; id++) {
+          String eventName = allData[id][Strings.specialDays];
+          String locName = allData[id][Strings.countryName];
+          String key = allData[id][Strings.date];
+          DateTime date2 = DateTime.parse('$key ${timing[locName]}').subtract(const Duration(days: 1));
+          if (!date2.isBefore(now) && !date2.isAtSameMomentAs(now)) {
+            ob.scheduleNotification(
+              id: id,
+              title: locName,
+              body: eventName,
+              payLoad: Strings.celebration,
+              scheduledNotificationDateTime: date2,
+            );
+          }
         }
       }
       pref.setBool(Strings.initialWork, true);
+    }catch(e){
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
   }
 
@@ -345,8 +344,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       DefaultTextStyle(
-                        style:  TextStyle(
-                            fontSize: displayWidth(context)*0.05,
+                        style: TextStyle(
+                            fontSize: displayWidth(context) * 0.05,
                             fontWeight: FontWeight.w400,
                             wordSpacing: 1,
                             color: Colors.black),
@@ -360,13 +359,15 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                         child: Column(
                           children: <Widget>[
                             Padding(
-                              padding:  EdgeInsets.only(bottom:displayHeight(context)*0.03),
+                              padding: EdgeInsets.only(
+                                  bottom: displayHeight(context) * 0.03),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children:  [
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
                                   DefaultTextStyle(
                                     style: TextStyle(
-                                        fontSize: displayWidth(context)*0.04,
+                                        fontSize: displayWidth(context) * 0.04,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.black),
                                     child: const Text(
@@ -375,7 +376,7 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                   ),
                                   DefaultTextStyle(
                                     style: TextStyle(
-                                        fontSize: displayWidth(context)*0.04,
+                                        fontSize: displayWidth(context) * 0.04,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.black),
                                     child: const Text(
@@ -384,7 +385,7 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                   ),
                                   DefaultTextStyle(
                                     style: TextStyle(
-                                        fontSize: displayWidth(context)*0.04,
+                                        fontSize: displayWidth(context) * 0.04,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.black),
                                     child: const Text(
@@ -393,7 +394,7 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                   ),
                                   DefaultTextStyle(
                                     style: TextStyle(
-                                        fontSize: displayWidth(context)*0.04,
+                                        fontSize: displayWidth(context) * 0.04,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.black),
                                     child: const Text(
@@ -402,7 +403,7 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                   ),
                                   DefaultTextStyle(
                                     style: TextStyle(
-                                        fontSize: displayWidth(context)*0.04,
+                                        fontSize: displayWidth(context) * 0.04,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.black),
                                     child: const Text(
@@ -411,7 +412,7 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                   ),
                                   DefaultTextStyle(
                                     style: TextStyle(
-                                        fontSize: displayWidth(context)*0.04,
+                                        fontSize: displayWidth(context) * 0.04,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.black),
                                     child: const Text(
@@ -420,7 +421,7 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                   ),
                                   DefaultTextStyle(
                                     style: TextStyle(
-                                        fontSize: displayWidth(context)*0.04,
+                                        fontSize: displayWidth(context) * 0.04,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.black),
                                     child: const Text(
@@ -438,7 +439,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                   selectedDate: selectedDate,
                                   todayDate: todayDate,
                                   todayMonth: todayMonth,
-                                  month: monthName[i],leftMargin: 0.03,
+                                  month: monthName[i],
+                                  leftMargin: 0.03,
                                   selectedMonth: selectedMonth,
                                   onDateSelected: _updateSelectedDate,
                                 ),
@@ -457,7 +459,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                   selectedDate: selectedDate,
                                   todayDate: todayDate,
                                   todayMonth: todayMonth,
-                                  month: monthName[i],leftMargin: 0.06,
+                                  month: monthName[i],
+                                  leftMargin: 0.06,
                                   selectedMonth: selectedMonth,
                                   onDateSelected: _updateSelectedDate,
                                 ),
@@ -465,7 +468,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                   date: dateInput3,
                                   selectedDate: selectedDate,
                                   todayDate: todayDate,
-                                  todayMonth: todayMonth,leftMargin: 0.07,
+                                  todayMonth: todayMonth,
+                                  leftMargin: 0.07,
                                   month: monthName[i],
                                   selectedMonth: selectedMonth,
                                   onDateSelected: _updateSelectedDate,
@@ -474,7 +478,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                   date: dateInput4,
                                   selectedDate: selectedDate,
                                   todayDate: todayDate,
-                                  todayMonth: todayMonth,leftMargin: 0.05,
+                                  todayMonth: todayMonth,
+                                  leftMargin: 0.05,
                                   month: monthName[i],
                                   selectedMonth: selectedMonth,
                                   onDateSelected: _updateSelectedDate,
@@ -483,13 +488,14 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                   date: dateInput5,
                                   selectedDate: selectedDate,
                                   todayDate: todayDate,
-                                  todayMonth: todayMonth,leftMargin: 0.05,
+                                  todayMonth: todayMonth,
+                                  leftMargin: 0.05,
                                   month: monthName[i],
                                   selectedMonth: selectedMonth,
                                   onDateSelected: _updateSelectedDate,
                                 ),
                                 Day(
-                                    leftMargin: 0.04,
+                                  leftMargin: 0.04,
                                   date: dateInput6,
                                   selectedDate: selectedDate,
                                   todayDate: todayDate,
@@ -504,8 +510,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
                                 Day(
-                                    date: dateInput00,leftMargin: 0.03,
-
+                                    date: dateInput00,
+                                    leftMargin: 0.03,
                                     selectedDate: selectedDate,
                                     todayDate: todayDate,
                                     todayMonth: todayMonth,
@@ -513,8 +519,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                     selectedMonth: selectedMonth,
                                     onDateSelected: _updateSelectedDate),
                                 Day(
-                                    date: dateInput01,leftMargin: 0.05,
-
+                                    date: dateInput01,
+                                    leftMargin: 0.05,
                                     selectedDate: selectedDate,
                                     todayDate: todayDate,
                                     todayMonth: todayMonth,
@@ -522,8 +528,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                     selectedMonth: selectedMonth,
                                     onDateSelected: _updateSelectedDate),
                                 Day(
-                                    date: dateInput02,leftMargin: 0.06,
-
+                                    date: dateInput02,
+                                    leftMargin: 0.06,
                                     selectedDate: selectedDate,
                                     todayDate: todayDate,
                                     todayMonth: todayMonth,
@@ -532,8 +538,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                     onDateSelected: _updateSelectedDate),
                                 Day(
                                     date: dateInput03,
-                                    selectedDate: selectedDate,leftMargin: 0.07,
-
+                                    selectedDate: selectedDate,
+                                    leftMargin: 0.07,
                                     todayDate: todayDate,
                                     todayMonth: todayMonth,
                                     month: monthName[i],
@@ -541,8 +547,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                     onDateSelected: _updateSelectedDate),
                                 Day(
                                     date: dateInput04,
-                                    selectedDate: selectedDate,leftMargin: 0.05,
-
+                                    selectedDate: selectedDate,
+                                    leftMargin: 0.05,
                                     todayDate: todayDate,
                                     todayMonth: todayMonth,
                                     month: monthName[i],
@@ -550,8 +556,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                     onDateSelected: _updateSelectedDate),
                                 Day(
                                     date: dateInput05,
-                                    selectedDate: selectedDate,leftMargin: 0.05,
-
+                                    selectedDate: selectedDate,
+                                    leftMargin: 0.05,
                                     todayDate: todayDate,
                                     todayMonth: todayMonth,
                                     month: monthName[i],
@@ -573,7 +579,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                               children: <Widget>[
                                 Day(
                                     date: dateInput10,
-                                    selectedDate: selectedDate,leftMargin: 0.03,
+                                    selectedDate: selectedDate,
+                                    leftMargin: 0.03,
                                     todayDate: todayDate,
                                     todayMonth: todayMonth,
                                     month: monthName[i],
@@ -582,7 +589,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                 Day(
                                     date: dateInput11,
                                     selectedDate: selectedDate,
-                                    todayDate: todayDate,leftMargin: 0.05,
+                                    todayDate: todayDate,
+                                    leftMargin: 0.05,
                                     todayMonth: todayMonth,
                                     month: monthName[i],
                                     selectedMonth: selectedMonth,
@@ -590,7 +598,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                 Day(
                                     date: dateInput12,
                                     selectedDate: selectedDate,
-                                    todayDate: todayDate,leftMargin: 0.06,
+                                    todayDate: todayDate,
+                                    leftMargin: 0.06,
                                     todayMonth: todayMonth,
                                     month: monthName[i],
                                     selectedMonth: selectedMonth,
@@ -598,7 +607,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                 Day(
                                     date: dateInput13,
                                     selectedDate: selectedDate,
-                                    todayDate: todayDate,leftMargin: 0.07,
+                                    todayDate: todayDate,
+                                    leftMargin: 0.07,
                                     todayMonth: todayMonth,
                                     month: monthName[i],
                                     selectedMonth: selectedMonth,
@@ -606,7 +616,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                 Day(
                                     date: dateInput14,
                                     selectedDate: selectedDate,
-                                    todayDate: todayDate,leftMargin: 0.05,
+                                    todayDate: todayDate,
+                                    leftMargin: 0.05,
                                     todayMonth: todayMonth,
                                     month: monthName[i],
                                     selectedMonth: selectedMonth,
@@ -615,14 +626,16 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                     date: dateInput15,
                                     selectedDate: selectedDate,
                                     todayDate: todayDate,
-                                    todayMonth: todayMonth,leftMargin: 0.05,
+                                    todayMonth: todayMonth,
+                                    leftMargin: 0.05,
                                     month: monthName[i],
                                     selectedMonth: selectedMonth,
                                     onDateSelected: _updateSelectedDate),
                                 Day(
                                     date: dateInput16,
                                     selectedDate: selectedDate,
-                                    todayDate: todayDate,leftMargin: 0.04,
+                                    todayDate: todayDate,
+                                    leftMargin: 0.04,
                                     todayMonth: todayMonth,
                                     month: monthName[i],
                                     selectedMonth: selectedMonth,
@@ -633,7 +646,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
                                 Day(
-                                    date: dateInput20,leftMargin: 0.03,
+                                    date: dateInput20,
+                                    leftMargin: 0.03,
                                     selectedDate: selectedDate,
                                     todayDate: todayDate,
                                     todayMonth: todayMonth,
@@ -642,7 +656,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                     onDateSelected: _updateSelectedDate),
                                 Day(
                                     date: dateInput21,
-                                    selectedDate: selectedDate,leftMargin: 0.05,
+                                    selectedDate: selectedDate,
+                                    leftMargin: 0.05,
                                     todayDate: todayDate,
                                     todayMonth: todayMonth,
                                     month: monthName[i],
@@ -651,7 +666,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                 Day(
                                     date: dateInput22,
                                     selectedDate: selectedDate,
-                                    todayDate: todayDate,leftMargin: 0.06,
+                                    todayDate: todayDate,
+                                    leftMargin: 0.06,
                                     todayMonth: todayMonth,
                                     month: monthName[i],
                                     selectedMonth: selectedMonth,
@@ -659,13 +675,15 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                 Day(
                                     date: dateInput23,
                                     selectedDate: selectedDate,
-                                    month: monthName[i],leftMargin: 0.07,
+                                    month: monthName[i],
+                                    leftMargin: 0.07,
                                     todayDate: todayDate,
                                     todayMonth: todayMonth,
                                     selectedMonth: selectedMonth,
                                     onDateSelected: _updateSelectedDate),
                                 Day(
-                                    date: dateInput24,leftMargin: 0.05,
+                                    date: dateInput24,
+                                    leftMargin: 0.05,
                                     selectedDate: selectedDate,
                                     todayDate: todayDate,
                                     todayMonth: todayMonth,
@@ -676,13 +694,15 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                     date: dateInput25,
                                     selectedDate: selectedDate,
                                     todayDate: todayDate,
-                                    todayMonth: todayMonth,leftMargin: 0.05,
+                                    todayMonth: todayMonth,
+                                    leftMargin: 0.05,
                                     month: monthName[i],
                                     selectedMonth: selectedMonth,
                                     onDateSelected: _updateSelectedDate),
                                 Day(
                                     date: dateInput26,
-                                    selectedDate: selectedDate,leftMargin: 0.04,
+                                    selectedDate: selectedDate,
+                                    leftMargin: 0.04,
                                     todayDate: todayDate,
                                     todayMonth: todayMonth,
                                     month: monthName[i],
@@ -696,7 +716,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                 Day(
                                     date: dateInput30,
                                     selectedDate: selectedDate,
-                                    todayDate: todayDate,leftMargin: 0.03,
+                                    todayDate: todayDate,
+                                    leftMargin: 0.03,
                                     todayMonth: todayMonth,
                                     month: monthName[i],
                                     selectedMonth: selectedMonth,
@@ -704,13 +725,15 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                 Day(
                                     date: dateInput31,
                                     selectedDate: selectedDate,
-                                    todayDate: todayDate,leftMargin: 0.05,
+                                    todayDate: todayDate,
+                                    leftMargin: 0.05,
                                     todayMonth: todayMonth,
                                     month: monthName[i],
                                     selectedMonth: selectedMonth,
                                     onDateSelected: _updateSelectedDate),
                                 Day(
-                                    date: dateInput32,leftMargin: 0.06,
+                                    date: dateInput32,
+                                    leftMargin: 0.06,
                                     selectedDate: selectedDate,
                                     todayDate: todayDate,
                                     todayMonth: todayMonth,
@@ -719,7 +742,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                     onDateSelected: _updateSelectedDate),
                                 Day(
                                     date: dateInput33,
-                                    selectedDate: selectedDate,leftMargin: 0.07,
+                                    selectedDate: selectedDate,
+                                    leftMargin: 0.07,
                                     todayDate: todayDate,
                                     todayMonth: todayMonth,
                                     month: monthName[i],
@@ -728,7 +752,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                 Day(
                                     date: dateInput34,
                                     selectedDate: selectedDate,
-                                    todayDate: todayDate,leftMargin: 0.05,
+                                    todayDate: todayDate,
+                                    leftMargin: 0.05,
                                     todayMonth: todayMonth,
                                     month: monthName[i],
                                     selectedMonth: selectedMonth,
@@ -736,7 +761,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                 Day(
                                     date: dateInput35,
                                     todayDate: todayDate,
-                                    todayMonth: todayMonth,leftMargin: 0.05,
+                                    todayMonth: todayMonth,
+                                    leftMargin: 0.05,
                                     selectedDate: selectedDate,
                                     month: monthName[i],
                                     selectedMonth: selectedMonth,
@@ -759,12 +785,14 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                     date: dateInput40,
                                     selectedDate: selectedDate,
                                     todayDate: todayDate,
-                                    todayMonth: todayMonth,leftMargin: 0.03,
+                                    todayMonth: todayMonth,
+                                    leftMargin: 0.03,
                                     month: monthName[i],
                                     selectedMonth: selectedMonth,
                                     onDateSelected: _updateSelectedDate),
                                 Day(
-                                    date: dateInput41,leftMargin: 0.05,
+                                    date: dateInput41,
+                                    leftMargin: 0.05,
                                     selectedDate: selectedDate,
                                     todayDate: todayDate,
                                     todayMonth: todayMonth,
@@ -773,7 +801,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                     onDateSelected: _updateSelectedDate),
                                 Day(
                                     date: dateInput42,
-                                    selectedDate: selectedDate,leftMargin: 0.06,
+                                    selectedDate: selectedDate,
+                                    leftMargin: 0.06,
                                     month: monthName[i],
                                     todayDate: todayDate,
                                     todayMonth: todayMonth,
@@ -782,7 +811,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                 Day(
                                     date: dateInput43,
                                     selectedDate: selectedDate,
-                                    todayDate: todayDate,leftMargin: 0.07,
+                                    todayDate: todayDate,
+                                    leftMargin: 0.07,
                                     todayMonth: todayMonth,
                                     month: monthName[i],
                                     selectedMonth: selectedMonth,
@@ -791,7 +821,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                     date: dateInput44,
                                     selectedDate: selectedDate,
                                     todayDate: todayDate,
-                                    todayMonth: todayMonth,leftMargin: 0.05,
+                                    todayMonth: todayMonth,
+                                    leftMargin: 0.05,
                                     month: monthName[i],
                                     selectedMonth: selectedMonth,
                                     onDateSelected: _updateSelectedDate),
@@ -799,13 +830,15 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                                     date: dateInput45,
                                     selectedDate: selectedDate,
                                     todayDate: todayDate,
-                                    todayMonth: todayMonth,leftMargin: 0.05,
+                                    todayMonth: todayMonth,
+                                    leftMargin: 0.05,
                                     month: monthName[i],
                                     selectedMonth: selectedMonth,
                                     onDateSelected: _updateSelectedDate),
                                 Day(
                                     date: dateInput46,
-                                    selectedDate: selectedDate,leftMargin: 0.04,
+                                    selectedDate: selectedDate,
+                                    leftMargin: 0.04,
                                     todayDate: todayDate,
                                     todayMonth: todayMonth,
                                     month: monthName[i],
@@ -867,18 +900,47 @@ class _DayState extends State<Day> {
       return AppColors.transparant;
     }
   }
+  // deviceManger() async {
+  //   final DeviceCalendarPlugin device = DeviceCalendarPlugin();
+  //   final loc = getLocation('Asia/Kolkata');
+  //   final calendarsResult = await device.retrieveCalendars();
+  //   final List<Calendar> calendars = calendarsResult.data ?? [];
+  //   for (var element in calendars)  {
+  //     bool? chek= element.isDefault;
+  //     print(element.name);
+  //     print(element.color);
+  //     print(element.id);
+  //     print(element.isDefault);
+  //     if(chek!){
+  //       final event = Event(
+  //         element.id,
+  //         title: 'hekko',
+  //         eventId: '5001',
+  //         description: 'kkkk',
+  //         start: TZDateTime(loc, 2023, 5, 13, 13, 52 ),
+  //         end: TZDateTime(loc, 2023, 5, 13, 13, 52, 50),
+  //         location: 'Asia/Kolkata',
+  //       );
+  //       final res = await device.createOrUpdateEvent(event);
+  //       print('isSuccess');
+  //       print(res?.isSuccess);
+  //     }
+  //   }
+  //   final see= device.retrieveEvents('5001',null);
+  //   print(see);
+  // }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
         widget.onDateSelected.call(widget.date, widget.month);
-
+// deviceManger();
         // print(widget.date + "-" + widget.month + "-" + now.year.toString());
         DateTime now = DateTime.now();
         String year = now.year.toString();
-        String month = stringManger(widget.month);
-        String day = stringDate(widget.date);
+        String month = Strings().stringMonthManger(widget.month);
+        String day = Strings().stringDateManager(widget.date);
         gettingResult('$year-$month-$day');
         _dialogBuilder(context);
       },
@@ -893,12 +955,14 @@ class _DayState extends State<Day> {
             border: Border.all(color: _selectcolor())),
         margin: EdgeInsets.only(
             top: displayHeight(context) * 0.01,
-            left: displayWidth(context)*widget.leftMargin,
+            left: displayWidth(context) * widget.leftMargin,
             bottom: displayHeight(context) * 0.02),
         child: Center(
           child: Text(
             widget.date,
-            style:  TextStyle(fontSize: displayWidth(context)*0.04,),
+            style: TextStyle(
+              fontSize: displayWidth(context) * 0.04,
+            ),
           ),
         ),
       ),
@@ -956,59 +1020,8 @@ class _DayState extends State<Day> {
     );
   }
 
-  String stringManger(String month) {
-    if (month == "January") {
-      return "01";
-    } else if (month == "February") {
-      return "02";
-    } else if (month == "March") {
-      return "03";
-    } else if (month == "April") {
-      return "04";
-    } else if (month == "May") {
-      return "05";
-    } else if (month == "June") {
-      return "06";
-    } else if (month == "July") {
-      return "07";
-    } else if (month == "August") {
-      return "08";
-    } else if (month == "September") {
-      return "09";
-    } else if (month == "October") {
-      return "10";
-    } else if (month == "November") {
-      return "11";
-    } else if (month == "December") {
-      return "12";
-    } else {
-      return "Invaild";
-    }
-  }
 
-  String stringDate(String date) {
-    if (date == "1") {
-      return "01";
-    } else if (date == "2") {
-      return "02";
-    } else if (date == "3") {
-      return "03";
-    } else if (date == "4") {
-      return "04";
-    } else if (date == "5") {
-      return "05";
-    } else if (date == "6") {
-      return "06";
-    } else if (date == "7") {
-      return "07";
-    } else if (date == "8") {
-      return "08";
-    } else if (date == "9") {
-      return "09";
-    } else {
-      return widget.date;
-    }
-  }
+
 
   gettingResult(String todayDate) {
     realData.clear();
