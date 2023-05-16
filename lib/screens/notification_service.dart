@@ -1,14 +1,13 @@
-import 'dart:typed_data';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationService {
   final FlutterLocalNotificationsPlugin notificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
 
   Future<void> initNotification() async {
     AndroidInitializationSettings initializationSettingsAndroid =
-    const AndroidInitializationSettings('notify_logo');
+        const AndroidInitializationSettings('notification_logo');
 
     var initializationSettingsIOS = DarwinInitializationSettings(
         requestAlertPermission: true,
@@ -25,24 +24,22 @@ class NotificationService {
   }
 
   notificationDetails() {
-    return  NotificationDetails(
+    return const NotificationDetails(
         android: AndroidNotificationDetails('channelId', 'channelName',
-            importance: Importance.max,
-          sound: const RawResourceAndroidNotificationSound('notification_alarm'),
-          playSound: true,
+            importance: Importance.high,
+            sound: RawResourceAndroidNotificationSound('notification_alarm'),
+            playSound: true,
             enableVibration: true,
-            vibrationPattern: Int64List.fromList([0, 500, 1000, 500, 1000, 500, 1000]),
-            priority: Priority.max
-        ),
-        iOS: const DarwinNotificationDetails());
+            priority: Priority.max),
+        iOS: DarwinNotificationDetails());
   }
 
   Future scheduleNotification(
       {int id = 0,
-        String? title,
-        String? body,
-        String? payLoad,
-        required DateTime scheduledNotificationDateTime}) async {
+      String? title,
+      String? body,
+      String? payLoad,
+      required DateTime scheduledNotificationDateTime}) async {
     return notificationsPlugin.zonedSchedule(
         id,
         title,
@@ -51,10 +48,8 @@ class NotificationService {
           scheduledNotificationDateTime,
           tz.local,
         ),
-
         await notificationDetails(),
-
         uiLocalNotificationDateInterpretation:
-        UILocalNotificationDateInterpretation.wallClockTime);
+            UILocalNotificationDateInterpretation.wallClockTime);
   }
 }

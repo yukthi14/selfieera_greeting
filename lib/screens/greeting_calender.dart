@@ -1,13 +1,14 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
-import 'package:selfieera_greeting/constants/color.dart';
-import 'package:selfieera_greeting/constants/data.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:selfieera_greeting/constants/color.dart';
+import 'package:selfieera_greeting/constants/data.dart';
 import 'package:selfieera_greeting/constants/sizer.dart';
 import 'package:selfieera_greeting/constants/strings.dart';
 import 'package:selfieera_greeting/screens/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../constants/time_in_india.dart';
 
 class GreetingCalender extends StatefulWidget {
@@ -53,14 +54,13 @@ class _GreetingCalenderState extends State<GreetingCalender> {
     }
   }
 
-
   setAlarm(var allData) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     DateTime now = DateTime.now();
-    try{
+    try {
       if (pref.getBool(Strings.initialWork) == null) {
-         NotificationService ob = NotificationService();
-        // DateTime date3 = DateTime.parse('2023-05-13 15:45:00');
+        NotificationService ob = NotificationService();
+        // DateTime date3 = DateTime.parse('2023-05-16 14:12:00');
         // ob.scheduleNotification(
         //   id: 6000,
         //   title: 'hello yukthi',
@@ -72,7 +72,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
           String eventName = allData[id][Strings.specialDays];
           String locName = allData[id][Strings.countryName];
           String key = allData[id][Strings.date];
-          DateTime date2 = DateTime.parse('$key ${timing[locName]}').subtract(const Duration(days: 1));
+          DateTime date2 = DateTime.parse('$key ${timing[locName]}')
+              .subtract(const Duration(days: 2));
           if (!date2.isBefore(now) && !date2.isAtSameMomentAs(now)) {
             ob.scheduleNotification(
               id: id,
@@ -85,7 +86,7 @@ class _GreetingCalenderState extends State<GreetingCalender> {
         }
       }
       pref.setBool(Strings.initialWork, true);
-    }catch(e){
+    } catch (e) {
       if (kDebugMode) {
         print(e.toString());
       }
@@ -1019,9 +1020,6 @@ class _DayState extends State<Day> {
       },
     );
   }
-
-
-
 
   gettingResult(String todayDate) {
     realData.clear();
