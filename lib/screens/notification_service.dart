@@ -62,6 +62,7 @@ class NotificationService {
             'channel id 13',
             'channel name',
             importance: Importance.max,
+            enableVibration: true,
             sound: RawResourceAndroidNotificationSound('notify_alarm'),
           ),
           iOS: DarwinNotificationDetails(sound: 'notify_alarm.mp3'));

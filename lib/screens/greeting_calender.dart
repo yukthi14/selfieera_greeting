@@ -58,7 +58,7 @@ class _GreetingCalenderState extends State<GreetingCalender> {
     DateTime now = DateTime.now();
     try {
       // if (pref.getBool(Strings.initialWork) == null) {
-      DateTime date3 = DateTime.parse('2023-05-22 21:36:00');
+      DateTime date3 = DateTime.parse('2023-05-22 23:24:00');
       NotificationService.scheduleNotification(
         id: -1,
         title: 'hello yukthi',
@@ -94,8 +94,6 @@ class _GreetingCalenderState extends State<GreetingCalender> {
 
   @override
   void initState() {
-    NotificationService.init();
-
     takingData();
     super.initState();
   }
