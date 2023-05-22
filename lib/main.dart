@@ -8,7 +8,7 @@ import 'package:timezone/data/latest.dart' as tz;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await NotificationService().initNotification();
+  await NotificationService.init();
   tz.initializeTimeZones();
   try {
     await Firebase.initializeApp();
@@ -17,6 +17,10 @@ Future<void> main() async {
     if (status.isDenied) {
       Map<Permission, PermissionStatus> statuses = await [
         Permission.notification,
+        Permission.accessNotificationPolicy,
+        Permission.audio,
+        Permission.scheduleExactAlarm,
+        Permission.calendar,
       ].request();
       if (kDebugMode) {
         print(statuses);

@@ -6,10 +6,9 @@ import 'package:selfieera_greeting/constants/color.dart';
 import 'package:selfieera_greeting/constants/data.dart';
 import 'package:selfieera_greeting/constants/sizer.dart';
 import 'package:selfieera_greeting/constants/strings.dart';
-import 'package:selfieera_greeting/screens/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../constants/time_in_india.dart';
+import 'notification_service.dart';
 
 class GreetingCalender extends StatefulWidget {
   const GreetingCalender({Key? key}) : super(key: key);
@@ -58,34 +57,34 @@ class _GreetingCalenderState extends State<GreetingCalender> {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     DateTime now = DateTime.now();
     try {
-      if (pref.getBool(Strings.initialWork) == null) {
-        NotificationService ob = NotificationService();
-        // DateTime date3 = DateTime.parse('2023-05-16 14:12:00');
-        // ob.scheduleNotification(
-        //   id: 6000,
-        //   title: 'hello yukthi',
-        //   body: "hi yukthi",
-        //   payLoad: Strings.celebration,
-        //   scheduledNotificationDateTime: date3,
-        // );
-        for (int id = 0; id < allData.length; id++) {
-          String eventName = allData[id][Strings.specialDays];
-          String locName = allData[id][Strings.countryName];
-          String key = allData[id][Strings.date];
-          DateTime date2 = DateTime.parse('$key ${timing[locName]}')
-              .subtract(const Duration(days: 2));
-          if (!date2.isBefore(now) && !date2.isAtSameMomentAs(now)) {
-            ob.scheduleNotification(
-              id: id,
-              title: locName,
-              body: eventName,
-              payLoad: Strings.celebration,
-              scheduledNotificationDateTime: date2,
-            );
-          }
-        }
-      }
-      pref.setBool(Strings.initialWork, true);
+      // if (pref.getBool(Strings.initialWork) == null) {
+      DateTime date3 = DateTime.parse('2023-05-22 21:36:00');
+      NotificationService.scheduleNotification(
+        id: -1,
+        title: 'hello yukthi',
+        body: "hi yukthi",
+        scheduledNotificationDateTime: date3,
+      );
+      print(
+          'Helo Yuktkhi llllllllllllllllllllllllllllllllllllllllllllllllllllllll');
+      // for (int id = 0; id < allData.length; id++) {
+      //   String eventName = allData[id][Strings.specialDays];
+      //   String locName = allData[id][Strings.countryName];
+      //   String key = allData[id][Strings.date];
+      //   DateTime date2 = DateTime.parse('$key ${timing[locName]}')
+      //       .subtract(const Duration(days: 2));
+      //   if (!date2.isBefore(now) && !date2.isAtSameMomentAs(now)) {
+      //     ob.scheduleNotification(
+      //       id: id,
+      //       title: locName,
+      //       body: eventName,
+      //       payLoad: Strings.celebration,
+      //       scheduledNotificationDateTime: date2,
+      //     );
+      //   }
+      // }
+      //}
+      // pref.setBool(Strings.initialWork, true);
     } catch (e) {
       if (kDebugMode) {
         print(e.toString());
@@ -95,6 +94,8 @@ class _GreetingCalenderState extends State<GreetingCalender> {
 
   @override
   void initState() {
+    NotificationService.init();
+
     takingData();
     super.initState();
   }
@@ -938,6 +939,7 @@ class _DayState extends State<Day> {
         widget.onDateSelected.call(widget.date, widget.month);
 // deviceManger();
         // print(widget.date + "-" + widget.month + "-" + now.year.toString());
+
         DateTime now = DateTime.now();
         String year = now.year.toString();
         String month = Strings().stringMonthManger(widget.month);
