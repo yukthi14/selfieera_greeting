@@ -8,7 +8,7 @@ import 'package:selfieera_greeting/constants/sizer.dart';
 import 'package:selfieera_greeting/constants/strings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'notification_service.dart';
+import '../notification_handler.dart';
 
 class GreetingCalender extends StatefulWidget {
   const GreetingCalender({Key? key}) : super(key: key);
@@ -58,13 +58,10 @@ class _GreetingCalenderState extends State<GreetingCalender> {
     DateTime now = DateTime.now();
     try {
       // if (pref.getBool(Strings.initialWork) == null) {
-      DateTime date3 = DateTime.parse('2023-05-22 23:24:00');
-      NotificationService.scheduleNotification(
-        id: -1,
-        title: 'hello yukthi',
-        body: "hi yukthi",
-        scheduledNotificationDateTime: date3,
-      );
+      DateTime date3 = DateTime.parse('2023-05-25 11:02:00');
+
+      notificationHandler.showNotificationCustomSound(
+          id: -1, title: 'Hello', body: 'Selfieera', date: date3);
       print(
           'Helo Yuktkhi llllllllllllllllllllllllllllllllllllllllllllllllllllllll');
       // for (int id = 0; id < allData.length; id++) {
@@ -74,12 +71,11 @@ class _GreetingCalenderState extends State<GreetingCalender> {
       //   DateTime date2 = DateTime.parse('$key ${timing[locName]}')
       //       .subtract(const Duration(days: 2));
       //   if (!date2.isBefore(now) && !date2.isAtSameMomentAs(now)) {
-      //     ob.scheduleNotification(
+      // notificationHandler.showNotificationCustomSound(
       //       id: id,
       //       title: locName,
       //       body: eventName,
-      //       payLoad: Strings.celebration,
-      //       scheduledNotificationDateTime: date2,
+      //       date: date2,
       //     );
       //   }
       // }
