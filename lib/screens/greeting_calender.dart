@@ -943,6 +943,15 @@ class _DayState extends State<Day> {
               itemBuilder: (context, index) {
                 String loc = realData[index][Strings.loc];
                 final dayName = realData[index][Strings.dayName];
+
+                String key = realData[index][Strings.date];
+
+                String finalDate = DateFormat('d MMMM y hh:mm aaa').format(
+                    DateTime.parse('$key ${timing[loc]}')
+                        .subtract(const Duration(days: 1)));
+                String alarmDate = DateFormat('d MMMM y hh:mm aaa').format(
+                    DateTime.parse('$key ${timing[loc]}')
+                        .subtract(const Duration(days: 2)));
                 return (dayName != null)
                     ? Column(
                         children: [
@@ -954,6 +963,28 @@ class _DayState extends State<Day> {
                             height: displayHeight(context) * 0.02,
                           ),
                           Text(dayName.toString()),
+                          SizedBox(
+                            height: displayHeight(context) * 0.02,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                            ),
+                            child: Text(
+                              alarmDate,
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                          ),
+                          const Icon(Icons.arrow_downward_rounded),
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                            ),
+                            child: Text(
+                              finalDate,
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                          ),
                           const Divider(
                             thickness: 3,
                           ),
@@ -983,9 +1014,11 @@ class _DayState extends State<Day> {
     realData.clear();
     for (var element in allEventDates) {
       if (element[Strings.date] == todayDate) {
-        dayName = element[Strings.specialDays];
-        location = element[Strings.countryName];
-        realData.add({Strings.loc: location, Strings.dayName: dayName});
+        realData.add({
+          Strings.loc: element[Strings.countryName],
+          Strings.dayName: element[Strings.specialDays],
+          Strings.date: element[Strings.date]
+        });
       }
     }
   }
