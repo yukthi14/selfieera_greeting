@@ -36,7 +36,7 @@ class Strings {
     } else if (month == "December") {
       return "12";
     } else {
-      return "Invaild";
+      return "Invalid";
     }
   }
 
@@ -65,7 +65,7 @@ class Strings {
   }
 }
 
-var allDatas = [];
+var allEventDates = [];
 List<Map<String, dynamic>> realData = [];
 String location = '';
 String dayName = '';

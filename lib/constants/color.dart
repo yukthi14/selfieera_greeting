@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 Color primaryColor = const Color(0xFFCADCED);
-List<BoxShadow> coustomShadow = [
+List<BoxShadow> customShadow = [
   BoxShadow(
       color: Colors.white.withOpacity(0.5),
       spreadRadius: -5,

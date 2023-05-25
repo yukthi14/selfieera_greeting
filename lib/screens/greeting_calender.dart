@@ -8,6 +8,7 @@ import 'package:selfieera_greeting/constants/sizer.dart';
 import 'package:selfieera_greeting/constants/strings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../constants/time_in_india.dart';
 import '../notification_handler.dart';
 
 class GreetingCalender extends StatefulWidget {
@@ -38,11 +39,11 @@ class _GreetingCalenderState extends State<GreetingCalender> {
     try {
       final snapshot = await ref.get();
       if (snapshot.exists) {
-        allDatas.clear();
+        allEventDates.clear();
         for (DataSnapshot element in snapshot.children) {
-          allDatas.add(element.value);
+          allEventDates.add(element.value);
         }
-        setAlarm(allDatas);
+        setAlarm(allEventDates);
       } else {
         if (kDebugMode) {
           print(Strings.noData);
@@ -57,30 +58,24 @@ class _GreetingCalenderState extends State<GreetingCalender> {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     DateTime now = DateTime.now();
     try {
-      // if (pref.getBool(Strings.initialWork) == null) {
-      DateTime date3 = DateTime.parse('2023-05-25 11:02:00');
-
-      notificationHandler.showNotificationCustomSound(
-          id: -1, title: 'Hello', body: 'Selfieera', date: date3);
-      print(
-          'Helo Yuktkhi llllllllllllllllllllllllllllllllllllllllllllllllllllllll');
-      // for (int id = 0; id < allData.length; id++) {
-      //   String eventName = allData[id][Strings.specialDays];
-      //   String locName = allData[id][Strings.countryName];
-      //   String key = allData[id][Strings.date];
-      //   DateTime date2 = DateTime.parse('$key ${timing[locName]}')
-      //       .subtract(const Duration(days: 2));
-      //   if (!date2.isBefore(now) && !date2.isAtSameMomentAs(now)) {
-      // notificationHandler.showNotificationCustomSound(
-      //       id: id,
-      //       title: locName,
-      //       body: eventName,
-      //       date: date2,
-      //     );
-      //   }
-      // }
-      //}
-      // pref.setBool(Strings.initialWork, true);
+      if (pref.getBool(Strings.initialWork) == null) {
+        for (int id = 0; id < 500; id++) {
+          String eventName = allData[id][Strings.specialDays];
+          String locName = allData[id][Strings.countryName];
+          String key = allData[id][Strings.date];
+          DateTime date2 = DateTime.parse('$key ${timing[locName]}')
+              .subtract(const Duration(days: 2));
+          if (!date2.isBefore(now) && !date2.isAtSameMomentAs(now)) {
+            notificationHandler.showNotificationCustomSound(
+              id: id,
+              title: locName,
+              body: eventName,
+              date: date2,
+            );
+          }
+        }
+      }
+      pref.setBool(Strings.initialWork, true);
     } catch (e) {
       if (kDebugMode) {
         print(e.toString());
@@ -156,9 +151,9 @@ class _GreetingCalenderState extends State<GreetingCalender> {
       }
     }
 
-    initializer(int initmonth, int inityear) {
-      DateTime firstday = DateTime.utc(inityear, initmonth, 1);
-      String dateFormat = DateFormat('EEEE').format(firstday);
+    initializer(int initMonth, int initYear) {
+      DateTime firstDay = DateTime.utc(initYear, initMonth, 1);
+      String dateFormat = DateFormat('EEEE').format(firstDay);
       if (dateFormat == "Monday") {
         initAtSun = "7";
         initAtMon = "1";
@@ -334,7 +329,7 @@ class _GreetingCalenderState extends State<GreetingCalender> {
                       horizontal: 0, vertical: displayHeight(context) * 0.15),
                   decoration: BoxDecoration(
                       color: primaryColor,
-                      boxShadow: coustomShadow,
+                      boxShadow: customShadow,
                       borderRadius: BorderRadius.circular(20)),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -883,7 +878,7 @@ class Day extends StatefulWidget {
 }
 
 class _DayState extends State<Day> {
-  Color _selectcolor() {
+  Color _selectColor() {
     if (widget.date == widget.selectedDate &&
         widget.month == widget.selectedMonth &&
         widget.selectedDate != " ") {
@@ -891,49 +886,17 @@ class _DayState extends State<Day> {
     } else if (widget.date == widget.selectedDate &&
         widget.month == widget.selectedMonth &&
         widget.selectedDate == " ") {
-      return AppColors.transparant;
+      return AppColors.transparent;
     } else {
-      return AppColors.transparant;
+      return AppColors.transparent;
     }
   }
-  // deviceManger() async {
-  //   final DeviceCalendarPlugin device = DeviceCalendarPlugin();
-  //   final loc = getLocation('Asia/Kolkata');
-  //   final calendarsResult = await device.retrieveCalendars();
-  //   final List<Calendar> calendars = calendarsResult.data ?? [];
-  //   for (var element in calendars)  {
-  //     bool? chek= element.isDefault;
-  //     print(element.name);
-  //     print(element.color);
-  //     print(element.id);
-  //     print(element.isDefault);
-  //     if(chek!){
-  //       final event = Event(
-  //         element.id,
-  //         title: 'hekko',
-  //         eventId: '5001',
-  //         description: 'kkkk',
-  //         start: TZDateTime(loc, 2023, 5, 13, 13, 52 ),
-  //         end: TZDateTime(loc, 2023, 5, 13, 13, 52, 50),
-  //         location: 'Asia/Kolkata',
-  //       );
-  //       final res = await device.createOrUpdateEvent(event);
-  //       print('isSuccess');
-  //       print(res?.isSuccess);
-  //     }
-  //   }
-  //   final see= device.retrieveEvents('5001',null);
-  //   print(see);
-  // }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
         widget.onDateSelected.call(widget.date, widget.month);
-// deviceManger();
-        // print(widget.date + "-" + widget.month + "-" + now.year.toString());
-
         DateTime now = DateTime.now();
         String year = now.year.toString();
         String month = Strings().stringMonthManger(widget.month);
@@ -948,8 +911,8 @@ class _DayState extends State<Day> {
             color: (widget.date == widget.todayDate &&
                     widget.month == widget.todayMonth)
                 ? AppColors.black54
-                : AppColors.transparant,
-            border: Border.all(color: _selectcolor())),
+                : AppColors.transparent,
+            border: Border.all(color: _selectColor())),
         margin: EdgeInsets.only(
             top: displayHeight(context) * 0.01,
             left: displayWidth(context) * widget.leftMargin,
@@ -1008,7 +971,6 @@ class _DayState extends State<Day> {
                           ),
                         ],
                       );
-                // return Text(dayName.toString());
               },
             ),
           ),
@@ -1019,7 +981,7 @@ class _DayState extends State<Day> {
 
   gettingResult(String todayDate) {
     realData.clear();
-    for (var element in allDatas) {
+    for (var element in allEventDates) {
       if (element[Strings.date] == todayDate) {
         dayName = element[Strings.specialDays];
         location = element[Strings.countryName];
