@@ -58,6 +58,13 @@ class _GreetingCalenderState extends State<GreetingCalender> {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     DateTime now = DateTime.now();
     try {
+      // DateTime date2 = now.add(const Duration(minutes: 1));
+      // notificationHandler.showNotificationCustomSound(
+      //   id: -1,
+      //   title: "hello",
+      //   body: "hi",
+      //   date: date2,
+      // );
       if (pref.getBool(Strings.initialWork) == null) {
         for (int id = 0; id < 500; id++) {
           String eventName = allData[id][Strings.specialDays];
